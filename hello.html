@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Be My Valentine 💘</title>
+
+<style>
+:root {
+  --pink: #ff4d6d;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle at top, #ffe6ee, #ffd1dc);
+  font-family: 'Poppins', system-ui, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* CARD */
+.card {
+  background: white;
+  padding: 36px;
+  width: 92%;
+  max-width: 380px;
+  border-radius: 26px;
+  text-align: center;
+  box-shadow: 0 30px 60px rgba(0,0,0,.2);
+  animation: popIn .8s cubic-bezier(.25,1.4,.4,1);
+}
+
+@keyframes popIn {
+  0% { transform: scale(.7); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* TEXT */
+h1 {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--pink);
+  margin-bottom: 10px;
+}
+
+.big {
+  font-size: 40px;
+}
+
+p {
+  font-size: 15px;
+  color: #555;
+}
+
+/* INPUT */
+input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  margin-top: 16px;
+}
+
+/* BUTTONS */
+button {
+  padding: 14px 30px;
+  border-radius: 40px;
+  border: none;
+  font-size: 18px;
+  margin: 14px 6px;
+  cursor: pointer;
+}
+
+#continue, #yes {
+  background: var(--pink);
+  color: white;
+  font-weight: 600;
+}
+
+#no {
+  background: #eee;
+  position: absolute;
+}
+
+/* ROSE + CONFETTI */
+.fall {
+  position: absolute;
+  animation: drop linear forwards;
+}
+
+@keyframes drop {
+  from { transform: translateY(-10vh) rotate(0); }
+  to { transform: translateY(110vh) rotate(360deg); }
+}
+
+/* AIRPLANE */
+.plane {
+  position: absolute;
+  font-size: 26px;
+  animation: fly 2.5s ease forwards;
+}
+
+@keyframes fly {
+  0% { left: -10%; top: 70%; }
+  60% { left: 50%; top: 40%; }
+  100% { left: 110%; top: 20%; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAME LOCK -->
+<div class="card" id="lock">
+  <h1>Hey You 🐰💖</h1>
+  <p>This is for someone special 💘<br>📅 Feb 14</p>
+  <input id="nameInput" placeholder="Enter your name">
+  <button id="continue">Open 💌</button>
+  <p id="error" style="color:#ff4d6d; display:none;">Not you 😢</p>
+</div>
+
+<!-- MAIN -->
+<div class="card" id="main" style="display:none;">
+  <h1 class="big">Will you be<br>my Valentine? 💘🐰</h1>
+  <p>February 14 is better with you ✨</p>
+  <button id="yes">YES 💖</button>
+  <button id="no">NO 😒</button>
+</div>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_47c8d7f19f.mp3">
+</audio>
+
+<script>
+/* 🔐 NAME LOCK */
+const allowedName = "Kajal Torre"; // CHANGE
+const lock = document.getElementById("lock");
+const main = document.getElementById("main");
+const error = document.getElementById("error");
+
+continue.onclick = () => {
+  if (nameInput.value.trim().toLowerCase() === allowedName.toLowerCase()) {
+    lock.style.display = "none";
+    main.style.display = "block";
+  } else error.style.display = "block";
+};
+
+/* 🏃 NO BUTTON DODGE */
+const no = document.getElementById("no");
+function dodge() {
+  no.style.left = Math.random() * (innerWidth - 100) + "px";
+  no.style.top = Math.random() * (innerHeight - 50) + "px";
+}
+["mouseenter","touchstart","click"].forEach(e => no.addEventListener(e, dodge));
+
+/* 💖 YES ACTION */
+const yes = document.getElementById("yes");
+const music = document.getElementById("music");
+
+yes.onclick = () => {
+  music.play();
+  airplane();
+  explode();
+  setTimeout(() => {
+    document.body.innerHTML = `
+      <h1 style="color:white;font-size:36px;text-align:center;padding:30px;">
+      You’re my Valentine 🐰💖<br><br>
+      I can’t wait to spend February 14 with you,<br>
+      laughing, smiling, and making memories together 💘
+      </h1>`;
+  }, 1200);
+};
+
+/* ✈️ AIRPLANE HEART */
+function airplane() {
+  const p = document.createElement("div");
+  p.className = "plane";
+  p.innerHTML = "✈️💖";
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), 3000);
+}
+
+/* 🎉 CONFETTI EXPLOSION */
+function explode() {
+  for (let i = 0; i < 160; i++) {
+    const c = document.createElement("div");
+    c.className = "fall";
+    c.innerHTML = ["🎉","💖","🌹","🐰"][Math.floor(Math.random()*4)];
+    c.style.left = Math.random()*100 + "vw";
+    c.style.animationDuration = 3 + Math.random()*3 + "s";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 6000);
+  }
+}
+</script>
+
+</body>
+</html>
